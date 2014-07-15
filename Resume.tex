@@ -1,0 +1,330 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %% 
+%% LaTeX to get the ``??'' replaced with the number of the last page  %% 
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section 
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{\Huge{Madhu Surya}}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table 
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+\# 39-24-32, Narshimha Nagar & \href{mailto:madhusuryaj@gmail.com}{madhusuryaj@gmail.com}\\
+I E Post, Vizag - 7.    &  Phone: 955-355-2563 \\
+\end{tabular}
+
+%\section{Security Clearance} 
+%
+%Department of Defense Top Secret SCI with polygraph (expired: 2002) 
+
+%\section{Citizenship}
+%
+%India
+
+\section{Interests}
+%
+Algorithms, Databases, Web Technologies. \\
+
+
+
+\section{Professional Experience}
+\vspace*{-.5cm}\begin{itemize}
+  \item \textit{As an Entrepreneur: {\sf RK Technology Services} - Founded by me in May 2013} \\
+   \newline \indent Primarily a consultant in Web Technologies and Distributed Computing Services.
+     
+   \begin{innerlist}
+     
+  
+       \item Data ware-housing consultant for computer science department, Naval Science \& technological Laboratory (NSTL),
+       a Defense Research \& Development Organization at Visakhapatnam.
+
+       \item As a consultant software engineer for Front end of \href{http://yourevent.co}{\textbf{yourevent.co}} --
+       was a part of the design \& development team at the company.
+       
+         \item Also an ANSYS, software consultant for reputed firms like Kirloskar (P) Ltd., 
+       Hyprecision Hydrauliks (P) Ltd., York India (P) Ltd.    
+  
+   \end{innerlist}
+
+   \item As a Project officer: {\sf Andhra University (AU)} from January, 2011 - September, 2011. 
+     \begin{innerlist}
+    \item Developed a project {\em ``DBSoft-Vibration software for Onboard 
+      Vibro-Acoustic Machinary"}.
+    \item Currently in use at {\sc NSTL}, Visakhapatnam.
+    \item It also happens to be my B.Tech Final Year Project.  
+  \end{innerlist}    
+   \end{itemize}
+   
+%\begin{innerlist}
+%\item Internship in web technologies at RK Computational Services during the summer of 2012. This was used as a web portal at NSTL, 
+ % a DRDO organization.
+%\end{innerlist}
+
+
+
+\section{Education}
+%
+\href{http://www.gitam.edu/}{\textbf{Gandhi Institute of Technology and Management}}, Visakhapatnam, AP.
+\begin{itemize}
+  \item {M.Tech in Software Engineering},April 2013. 
+        \begin{innerlist}
+	\item Top 1\% of class.
+	\item GPA of 8.47 /10.
+        \item Area of Study: Software Effort Estimation Using Fuzzy Logic.\\
+        \end{innerlist}
+%\end{innerlist}
+
+
+\hspace*{-.33in} \href{http://jntuk.edu.in/}{\textbf{Jawaharlal Nehru Technological University}}, Kakinada, India.
+
+\item B.Tech in Information Technology \& Engineering, June 2011.
+        \begin{innerlist}
+	\item Topper in a class of 200. 
+	\item {\em Percentage} of 71.6 (translates into a GPA of 9.11/10)
+        \item \emph With High Honors in Systems Security.
+	\item Thesis Title : {DBSoft-Vibration database for onboard Vibro-Acoustic machinary}
+        \end{innerlist}
+\end{itemize}
+
+\section{Major Projects}
+\begin{innerlist}
+\item {\em DBSoft-Vibration database for onboard Vibro-Acoustic machinary }. \ \ \ This software was developed to index the status of on-board Vibro-Acoustic machinery. To 
+do this, we calculate the vibration levels at each frequency which it is transmitting to the support on which it is based.  Vibration data will be compared with acceptable levels and possible reasons for the excessive vibration levels can be predicted and possible remedial measures will be suggested to bring down the vibration levels to within the limits and in-turn mitigate the underwater radiated noise levels. The major modules of this project include the conversion of data from the frequency domain to time domain using Fourier transforms  and designing the back-end for the application.
+
+\item {\em Software Effort Estimation Using Crisp with Fuzzy logic:} \ \ \ Software effort estimation accuracy is a major challenge in the study of software engineering.
+  The limitations of the algorithmic effort estimation 
+  models are their inability to cope with uncertainty 
+  and imprecision in software project at early development stage.
+  To overcome these uncertainties soft computing techniques 
+  were used to estimate effort accurately. The soft computing 
+  methods are promising methods for getting accurate 
+  results for effort estimation. There are several metrics 
+  to estimate software effort but still size has its first place. 
+  In this project we are using Type-2 Fuzzy logic 
+  to reduce size so that effort of a software project  is reduced.
+
+
+\end{innerlist}
+
+\section{Public Talks \& Presentations} 
+%
+\begin{innerlist}
+\item Presented on various facets of Software testing in the technical tests of GITAM, JNTU, AITAM, SISTAM and Avanthi Colleges.
+\end{innerlist}
+
+\blankline
+
+
+\section{Technical Skills} 
+\textit{Programming}: C, C++
+        
+
+\blankline
+
+\textit{Applications}: \LaTeX{}, Microsoft Office,Eclipse
+        and other common productivity packages for Windows, OS X, and
+        Linux platforms
+
+\blankline
+
+\textit{Operating Systems}: Apple OS X, Linux -- Ubuntu and other UNIX variants.
+
+%%\section{Mathematical Expertise} 
+%
+%%Graph Theory, Linear Algebra and Cryptography
+
+%%\blankline
+
+%%Probability, Random Variables, and Stochastic Processes 
+
+%%\blankline
+
+%%Dynamic Optimization
+
+%%\blankline
+
+%%Game Theory
+
+\section{Relevant Course Work}
+Software Estimation and Testing.
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
